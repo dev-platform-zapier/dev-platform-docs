@@ -8,4 +8,4 @@ This is the home of the Developer Platform docs.
 
 ### Verifying links are not broken
 1. Run the [repo locally](#running-locally)
-2. Install the requirements and then run `python check_redirects.py` from the CLI.
+2. Install the requirements and then run `python check_redirects.py` from the CLI
