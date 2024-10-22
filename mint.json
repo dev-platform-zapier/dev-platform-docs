@@ -47,6 +47,10 @@
     {
       "name": "Developer Platform Login",
       "url": "https://zapier.com/platform/login"
+    },
+    {
+      "name": "Platform CLI",
+      "url": "platform/reference/cli-docs"
     }
   ],
   "primaryTab": {
