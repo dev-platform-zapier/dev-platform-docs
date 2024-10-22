@@ -77,7 +77,7 @@
     },
     {
       "group": "",
-      "pages": ["platform/dev-platform-login", "platform/home"]
+      "pages": ["platform/home", "platform/dev-platform-login"]
     },
     {
       "group": "Quick start",
