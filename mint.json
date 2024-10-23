@@ -471,8 +471,8 @@
   {
     "group": "Getting Started",
     "pages": [
-      "ai-actions/getting-started/intro",
-      "ai-actions/getting-started/quickstart"
+      "ai-actions/intro",
+      "ai-actions/quickstart"
     ]
   },
   {
