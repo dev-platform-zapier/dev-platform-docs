@@ -76,10 +76,6 @@
   ],
   "navigation": [
     {
-      "group": "home",
-      "pages": ["home"]
-    },
-    {
       "group": "",
       "pages": ["platform/home", "platform/dev-platform-login"]
     },
@@ -610,6 +606,20 @@
     "group": "Help",
     "pages": ["ai-actions/help/community", "ai-actions/help/bug"]
   }
+  ],
+  "redirects": [
+    {
+      "source": "/platform/:slug*",
+      "destination": "/platform/"
+    },
+    {
+      "source": "/partner-solutions/:slug*",
+      "destination": "/partner-solutions/"
+    },
+    {
+      "source": "/ai-actions/:slug*",
+      "destination": "/ai-actions/"
+    }
   ],
   "footerSocials": {
     "facebook": "http://www.facebook.com/ZapierApp?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier",
