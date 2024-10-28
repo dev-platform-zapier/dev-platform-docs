@@ -607,6 +607,20 @@
     "pages": ["ai-actions/help/community", "ai-actions/help/bug"]
   }
   ],
+  "redirects": [
+    {
+      "source": "/platform/:slug*",
+      "destination": "/platform/home"
+    },
+    {
+      "source": "/partner-solutions/:slug*",
+      "destination": "/partner-solutions/getting-started"
+    },
+    {
+      "source": "/ai-actions/:slug*",
+      "destination": "/ai-actions/intro"
+    }
+],
   "footerSocials": {
     "facebook": "http://www.facebook.com/ZapierApp?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier",
     "linkedin": "https://www.linkedin.com/company/zapier/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier",
