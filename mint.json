@@ -77,7 +77,7 @@
   "navigation": [
     {
       "group": "home",
-      "pages": ["home"]
+      "pages": ["index"]
     },
     {
       "group": "",
