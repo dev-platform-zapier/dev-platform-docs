@@ -3,7 +3,7 @@ title: 'Search-Powered Fields'
 description: 'Make it easier for users to search for the value to use for a Dynamic Dropdown at run-time.'
 ---
 
-<Note>This feature needs to be combined with [Dynamic Dropdowns](./dynamic-dropdowns).</Note>
+<Warning>This feature needs to be combined with [Dynamic Dropdowns](./dynamic-dropdowns) and is only available in the Platform CLI.</Warning>
 
 # Why use this
 This feature makes it easier for users to handle the following scenario in a workflow that has multiple steps:
@@ -24,8 +24,6 @@ button next to the dynamic dropdown. When the user clicks the button, the right 
 ![](https://cdn.zappy.app/c6bd53c4bf3efe9870493dc7c3c2dafc.gif)
 
 # How to configure it
-
-<Warning>This feature is only available in the Platform CLI.</Warning>
 
 In the definition of the input field, configure `search` with a value of `<searchActionKey>.<outputFieldKey>`.
 
