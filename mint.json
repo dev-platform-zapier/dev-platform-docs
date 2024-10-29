@@ -16,10 +16,6 @@
       "to": "#FE6C2A"
     }
   },
-  "openapi": [
-    "https://api.zapier.com/schema",
-    "https://actions.zapier.com/api/v2/openapi.json"
-  ],
   "background": { "style": "windows" },
   "topbarCtaButton": {
     "name": "Sign Up",
