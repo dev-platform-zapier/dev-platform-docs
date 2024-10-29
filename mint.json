@@ -18,7 +18,7 @@
   },
   "openapi": [
     "https://api.zapier.com/schema",
-    "https://raw.githubusercontent.com/dev-platform-zapier/dev-platform-docs/refs/heads/main/ai-actions/openapi.json"
+    "https://actions.zapier.com/api/v2/openapi.json"
   ],
   "background": { "style": "windows" },
   "topbarCtaButton": {
