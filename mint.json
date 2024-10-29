@@ -22,6 +22,9 @@
     "url": "https://zapier.com/sign-up",
     "arrow": false
   },
+  "openapi": [
+    "https://actions.zapier.com/api/v2/openapi.json"
+  ],
   "anchors": [
     {
       "name": "Community",
@@ -67,8 +70,7 @@
     },
     {
       "name": "AI Actions",
-      "url": "ai-actions/",
-      "openapi": "https://actions.zapier.com/api/v2/openapi.json"
+      "url": "ai-actions/"
     }
   ],
   "navigation": [
