@@ -71,7 +71,8 @@
     },
     {
       "name": "AI Actions",
-      "url": "ai-actions/"
+      "url": "ai-actions/",
+      "openapi": "https://actions.zapier.com/api/v2/openapi.json"
     }
   ],
   "navigation": [
