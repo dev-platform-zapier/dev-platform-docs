@@ -23,7 +23,8 @@
     "arrow": false
   },
   "openapi": [
-    "https://actions.zapier.com/api/v2/openapi.json"
+    "https://actions.zapier.com/api/v2/openapi.json",
+    "https://api.zapier.com/schema"
   ],
   "anchors": [
     {
