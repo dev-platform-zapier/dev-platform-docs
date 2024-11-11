@@ -55,6 +55,8 @@ In the above code example the dynamic property makes reference to a trigger with
 The dynamic dropdown would look something like this.
 ![screenshot of dynamic dropdown in Zap Editor](https://cdn.zappy.app/6a90fcc532704f6c14b91586f5cd1d5b.png)
 
+## Using resource as trigger
+
 In the first code example the dynamic dropdown is powered by a trigger. You can also use a resource to power a dynamic dropdown. To do this combine the resource key and the resource method using camel case.
 
 ```js
@@ -100,6 +102,8 @@ const App = {
 };
 ```
 
+## Hiding the trigger
+
 In some cases you will need to power a dynamic dropdown but do not want to make the Trigger available to the end user. Here it is best practice to create the trigger and set `hidden: true` on it's display object.
 
 ```js
@@ -125,6 +129,8 @@ const App = {
   },
 };
 ```
+
+## Dependencies between dropdowns
 
 You can have multiple dynamic dropdowns in a single Trigger or Action. And a dynamic dropdown can depend on the value chosen in another dynamic dropdown when making it's API call. Such as a Spreadsheet and Worksheet dynamic dropdown in a trigger or action. This means you must make sure that the key of the first dynamic dropdown is the same as referenced in the trigger powering the second.
 
@@ -176,6 +182,8 @@ const App = {
 ```
 
 The [Google Sheets](https://zapier.com/apps/google-sheets/integrations#triggers-and-actions) integration is an example of this pattern.
+
+## Custom behavior for dynamic dropdowns
 
 If you want your trigger to perform specific scripting for a dynamic dropdown you will need to make use of `bundle.meta.isFillingDynamicDropdown`. This can be useful if need to make use of [pagination](#whats-the-deal-with-pagination-when-is-it-used-and-how-does-it-work) in the dynamic dropdown to load more options.
 
