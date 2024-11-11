@@ -156,7 +156,6 @@
             "platform/build/add-fields",
             "platform/build/dynamic-field",
             "platform/build/line-items",
-            "platform/build/dynamic-dropdowns",
             "platform/build/search-powered-fields"
           ]
         },
@@ -219,7 +218,8 @@
               "group": "Input Fields",
               "pages": [
                 "platform/build/field-definitions",
-                "platform/build-cli/input-fields"
+                "platform/build-cli/input-fields",
+                "platform/build-cli/dynamic-dropdowns"
               ]
             }
           ]
