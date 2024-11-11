@@ -185,7 +185,7 @@ const App = {
 
 The [Google Sheets](https://zapier.com/apps/google-sheets/integrations#triggers-and-actions) integration is an example of this pattern.
 
-> Note: Even if a trigger to power a dynamic dropdown is hidden for direct use, you still need to define the input fields, and whether these are required. In the above example, when the Worksheet trigger defines a required `spreadsheet_id` field, products such as the editor will use this in two ways. Firstly, the worksheet field will be disabled until the spreadsheet field has been set. Secondly, when the user changes the spreadsheet field, the worksheet field gets cleared.
+> Note: Even if a trigger to power a dynamic dropdown is hidden for direct use, you still need to define the input fields, and whether these are required. In the above example, when the Worksheet trigger defines a required `spreadsheet_id` field (which also needs to be a dynamic dropdown), products such as the editor will use this in two ways. Firstly, the worksheet field will be disabled until the spreadsheet field has been set. Secondly, when the user changes the spreadsheet field, the worksheet field gets cleared.
 
 ## Detect when a trigger is used for a dynamic dropdown
 
