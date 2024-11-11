@@ -111,7 +111,10 @@
     {
       "group": "Build with UI",
       "pages": [
-        "platform/quickstart/ui-tutorial",
+        {
+          "name": "Tutorial",
+          "url": "platform/quickstart/ui-tutorial"
+        },
         {
           "group": "Actions",
           "pages": [
