@@ -213,7 +213,7 @@
       "pages": [
         "platform/build-cli/overview",
         "platform/quickstart/cli-tutorial",
-        "platform/reference/faqs"
+        "platform/reference/faqs",
         "platform/reference/cli",
         "platform/reference/schema"
       ]
