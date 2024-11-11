@@ -336,12 +336,12 @@
             "platform/reference/ai-app"
           ]
         },
-        "platform/reference/cli",
         "platform/reference/transfer",
         "platform/reference/ai-actions",
         "platform/reference/custom-actions-api-requests",
         "platform/reference/legacy-scripting",
         "platform/reference/changelog",
+        "platform/reference/cli",
         "platform/reference/schema"
       ]
     },
