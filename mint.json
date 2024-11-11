@@ -632,6 +632,10 @@
     {
       "source": "/platform/reference/cli-docs",
       "destination": "/platform/build-cli/overview"
+    },
+    {
+      "source": "/platform/build/dynamic-dropdowns",
+      "destination": "/platform/build-cli/dynamic-dropdowns"
     }
   ]
 }
