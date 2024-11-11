@@ -111,10 +111,7 @@
     {
       "group": "Build with UI",
       "pages": [
-        {
-          "name": "Tutorial",
-          "url": "platform/quickstart/ui-tutorial"
-        },
+        "platform/quickstart/ui-tutorial",
         {
           "group": "Actions",
           "pages": [
@@ -214,14 +211,8 @@
     {
       "group": "Build with CLI",
       "pages": [
-        {
-          "name": "Overview",
-          "url": "platform/build-cli/overview"
-        },
-        {
-          "name": "Tutorial",
-          "url": "platform/quickstart/cli-tutorial"
-        },
+        "platform/build-cli/overview",
+        "platform/quickstart/cli-tutorial",
         "platform/reference/cli",
         "platform/reference/schema"
       ]
@@ -347,283 +338,276 @@
     },
     {
       "group": "Welcome",
-      "pages": [
-          "partner-solutions/getting-started"
-      ]
-  },
-  {
+      "pages": ["partner-solutions/getting-started"]
+    },
+    {
       "group": "Workflow API",
       "pages": [
-          "partner-solutions/workflow-api/intro",
-          {
-              "group": "Building a Workflow",
+        "partner-solutions/workflow-api/intro",
+        {
+          "group": "Building a Workflow",
+          "pages": [
+            "partner-solutions/workflow-api/Building-a-Zap",
+            "partner-solutions/workflow-api/Fields-and-Fieldsets",
+            "partner-solutions/workflow-api/Selecting-an-Action",
+            "partner-solutions/workflow-api/Selecting-an-Authentication",
+            {
+              "group": "Custom Flows",
               "pages": [
-                  "partner-solutions/workflow-api/Building-a-Zap",
-                  "partner-solutions/workflow-api/Fields-and-Fieldsets",
-                  "partner-solutions/workflow-api/Selecting-an-Action",
-                  "partner-solutions/workflow-api/Selecting-an-Authentication",
-                  {
-                      "group": "Custom Flows",
-                      "pages": [
-                          "partner-solutions/workflow-api/testing-a-step",
-                          "partner-solutions/workflow-api/Hardcoding-an-Action",
-                          "partner-solutions/workflow-api/adding-an-authentication"
-                      ]
-                  },
-                  "partner-solutions/workflow-api/limitations"
+                "partner-solutions/workflow-api/testing-a-step",
+                "partner-solutions/workflow-api/Hardcoding-an-Action",
+                "partner-solutions/workflow-api/adding-an-authentication"
               ]
-          },
-          "partner-solutions/workflow-api/list-apps",
-          "partner-solutions/workflow-api/list-zaps",
-          "partner-solutions/workflow-api/list-zap-templates",
-          "partner-solutions/workflow-api/embed-zap-editor"
+            },
+            "partner-solutions/workflow-api/limitations"
+          ]
+        },
+        "partner-solutions/workflow-api/list-apps",
+        "partner-solutions/workflow-api/list-zaps",
+        "partner-solutions/workflow-api/list-zap-templates",
+        "partner-solutions/workflow-api/embed-zap-editor"
       ]
-  },
-  {
+    },
+    {
       "group": "Workflow Element",
       "pages": [
-          "partner-solutions/workflow-element/intro",
-          "partner-solutions/elements-security",
-          "partner-solutions/embed-insights"
+        "partner-solutions/workflow-element/intro",
+        "partner-solutions/elements-security",
+        "partner-solutions/embed-insights"
       ]
-  },
-  {
+    },
+    {
       "group": "Embed Enhancements",
       "pages": [
-          "partner-solutions/pre-filled-zaps",
-          "partner-solutions/quick-account-creation"
+        "partner-solutions/pre-filled-zaps",
+        "partner-solutions/quick-account-creation"
       ]
-  },
-  {
+    },
+    {
       "group": "Getting Started With the API",
       "pages": [
-          "partner-solutions/api-reference/authentication",
-          "partner-solutions/api-reference/rate-limiting"
+        "partner-solutions/api-reference/authentication",
+        "partner-solutions/api-reference/rate-limiting"
       ]
-  },
-  {
-    "group": "Apps",
-    "pages": [
+    },
+    {
+      "group": "Apps",
+      "pages": [
         "partner-solutions/api-reference/apps/get-apps-[v1]",
         "partner-solutions/api-reference/apps/get-apps-[v2]"
-    ]
-},
-{
-    "group": "Categories",
-    "pages": [
-        "partner-solutions/api-reference/categories/get-categories"
-    ]
-},
-{
-    "group": "Accounts",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Categories",
+      "pages": ["partner-solutions/api-reference/categories/get-categories"]
+    },
+    {
+      "group": "Accounts",
+      "pages": [
         "partner-solutions/api-reference/accounts/user-profile",
         "partner-solutions/api-reference/accounts/create-account"
-    ]
-},
-{
-    "group": "Zap Templates",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Zap Templates",
+      "pages": [
         "partner-solutions/api-reference/zap-templates/get-zap-templates"
-    ]
-},
-{
-    "group": "Zaps",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Zaps",
+      "pages": [
         "partner-solutions/api-reference/zaps/get-zaps-[v1]",
         "partner-solutions/api-reference/zaps/guess-a-zap",
         "partner-solutions/api-reference/zaps/get-zaps-[v2]",
         "partner-solutions/api-reference/zaps/create-a-zap"
-    ]
-},
-{
-    "group": "Actions",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Actions",
+      "pages": [
         "partner-solutions/api-reference/actions/get-actions",
         "partner-solutions/api-reference/actions/get-input-fields",
         "partner-solutions/api-reference/actions/get-choices",
         "partner-solutions/api-reference/actions/get-output-fields",
         "partner-solutions/api-reference/actions/step-test"
-    ]
-},
-{
-    "group": "Authentications",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Authentications",
+      "pages": [
         "partner-solutions/api-reference/authentications/get-authentications",
         "partner-solutions/api-reference/authentications/create-authentication"
-    ]
-},
-{
-    "group": "Experimental",
-    "pages": [
+      ]
+    },
+    {
+      "group": "Experimental",
+      "pages": [
         "partner-solutions/api-reference/experimental/create-a-workflow-step"
-    ]
-},
-  {
+      ]
+    },
+    {
       "group": "Schemas",
       "pages": [
-          {
-              "group": "Common Types",
-              "pages": [
-                  "partner-solutions/api-reference/common-types/action",
-                  "partner-solutions/api-reference/common-types/app",
-                  "partner-solutions/api-reference/common-types/authentication",
-                  "partner-solutions/api-reference/common-types/choice",
-                  "partner-solutions/api-reference/common-types/fieldset",
-                  "partner-solutions/api-reference/common-types/infoField",
-                  "partner-solutions/api-reference/common-types/inputField",
-                  "partner-solutions/api-reference/common-types/outputField",
-                  "partner-solutions/api-reference/common-types/zap",
-                  "partner-solutions/api-reference/common-types/errors",
-                  "partner-solutions/api-reference/common-types/pagination",
-                  "partner-solutions/api-reference/common-types/requests",
-                  "partner-solutions/api-reference/common-types/responses"
-              ]
-          }
+        {
+          "group": "Common Types",
+          "pages": [
+            "partner-solutions/api-reference/common-types/action",
+            "partner-solutions/api-reference/common-types/app",
+            "partner-solutions/api-reference/common-types/authentication",
+            "partner-solutions/api-reference/common-types/choice",
+            "partner-solutions/api-reference/common-types/fieldset",
+            "partner-solutions/api-reference/common-types/infoField",
+            "partner-solutions/api-reference/common-types/inputField",
+            "partner-solutions/api-reference/common-types/outputField",
+            "partner-solutions/api-reference/common-types/zap",
+            "partner-solutions/api-reference/common-types/errors",
+            "partner-solutions/api-reference/common-types/pagination",
+            "partner-solutions/api-reference/common-types/requests",
+            "partner-solutions/api-reference/common-types/responses"
+          ]
+        }
       ]
-  },
-  {
-    "group": "Getting Started",
-    "pages": [
-      "ai-actions/intro",
-      "ai-actions/quickstart"
-    ]
-  },
-  {
-    "group": "How to",
-    "pages": [
-      "ai-actions/how-tos/auth",
-      "ai-actions/how-tos/account-list",
+    },
+    {
+      "group": "Getting Started",
+      "pages": ["ai-actions/intro", "ai-actions/quickstart"]
+    },
+    {
+      "group": "How to",
+      "pages": [
+        "ai-actions/how-tos/auth",
+        "ai-actions/how-tos/account-list",
 
-      "ai-actions/how-tos/stateless-vs-stored",
-      {
-        "group": "Stored actions",
-        "pages": [
-          "ai-actions/how-tos/stored/intro",
-          "ai-actions/how-tos/stored/action-configuration",
-          "ai-actions/how-tos/stored/list-actions",
-          "ai-actions/how-tos/stored/run-stored-action",
-          {
-            "group": "Manage stored actions",
-            "pages": [
-              "ai-actions/how-tos/stored/manage/get-action",
-              "ai-actions/how-tos/stored/manage/create-action",
-              "ai-actions/how-tos/stored/manage/update-action",
-              "ai-actions/how-tos/stored/manage/delete-action"
-            ]
-          }
-        ]
-      },
-      {
-        "group": "Stateless actions",
-        "pages": [
-          "ai-actions/how-tos/stateless/intro",
-          "ai-actions/how-tos/stateless/run-stateless-action"
-        ]
-      },
-      {
-        "group": "Gathering action information",
-        "pages": [
-          "ai-actions/how-tos/action-info/introduction",
-          "ai-actions/how-tos/action-info/find-app",
-          "ai-actions/how-tos/action-info/find-action",
-          "ai-actions/how-tos/action-info/choose-auth",
-          "ai-actions/how-tos/action-info/action-details",
-          "ai-actions/how-tos/action-info/prefill-choices"
-        ]
-      }
-    ]
-  },
-  {
-    "group": "API Reference",
-    "pages": [
-      {
-        "group": "meta",
-        "pages": [
-          "ai-actions/api-reference/meta/app-health-check",
-          "ai-actions/api-reference/meta/check-user-auth",
-          "ai-actions/api-reference/meta/get-account-list"
-        ]
-      },
-      {
-        "group": "actions",
-        "pages": [
-          "ai-actions/api-reference/actions/search-apps",
-          "ai-actions/api-reference/actions/search-actions",
-          "ai-actions/api-reference/actions/get-app-details",
-          "ai-actions/api-reference/actions/list-authentications-for-app",
-          "ai-actions/api-reference/actions/get-action-details",
-          "ai-actions/api-reference/actions/get-prefill-choices"
-        ]
-      },
-      {
-        "group": "execution",
-        "pages": [
-          "ai-actions/api-reference/execution/execute-stateless-action",
-          "ai-actions/api-reference/execution/rate-execution-log"
-        ]
-      },
-      {
-        "group": "ai-actions",
-        "pages": [
-          "ai-actions/api-reference/ai-actions/list-ai-actions",
-          "ai-actions/api-reference/ai-actions/execute-ai-action",
-          "ai-actions/api-reference/ai-actions/preview-ai-action",
-          "ai-actions/api-reference/ai-actions/create-ai-action",
-          "ai-actions/api-reference/ai-actions/get-ai-action",
-          "ai-actions/api-reference/ai-actions/update-ai-action",
-          "ai-actions/api-reference/ai-actions/delete-ai-action"
-        ]
-      }
-    ]
-  },
-  {
-    "group": "Tools",
-    "pages": ["ai-actions/tools/stateless-action"]
-  },
-  {
-    "group": "Libraries",
-    "pages": [
-      {
-        "group": "TypeScript (Node.js, Deno)",
-        "icon": "node-js",
-        "pages": [
-          "ai-actions/libraries/nodejs/getting-started",
-          "ai-actions/libraries/nodejs/authentication",
-          "ai-actions/libraries/nodejs/usage",
-          "ai-actions/libraries/nodejs/nextjs-reccommendation"
-        ]
-      },
-      {
-        "group": "React Components",
-        "icon": "react",
-        "pages": [
-          "ai-actions/libraries/react/getting-started",
-          {
-            "group": "Components",
-            "pages": [
-              "ai-actions/libraries/react/ai-actions-provider",
-              "ai-actions/libraries/react/action-list",
-              "ai-actions/libraries/react/edit-action",
-              "ai-actions/libraries/react/stateless-creator"
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "group": "Development Resources",
-    "pages": [
-      "ai-actions/developer-resources/openapi",
-      "ai-actions/developer-resources/keys",
-      "ai-actions/developer-resources/logs"
-    ]
-  },
-  {
-    "group": "Help",
-    "pages": ["ai-actions/help/community", "ai-actions/help/bug"]
-  }
+        "ai-actions/how-tos/stateless-vs-stored",
+        {
+          "group": "Stored actions",
+          "pages": [
+            "ai-actions/how-tos/stored/intro",
+            "ai-actions/how-tos/stored/action-configuration",
+            "ai-actions/how-tos/stored/list-actions",
+            "ai-actions/how-tos/stored/run-stored-action",
+            {
+              "group": "Manage stored actions",
+              "pages": [
+                "ai-actions/how-tos/stored/manage/get-action",
+                "ai-actions/how-tos/stored/manage/create-action",
+                "ai-actions/how-tos/stored/manage/update-action",
+                "ai-actions/how-tos/stored/manage/delete-action"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Stateless actions",
+          "pages": [
+            "ai-actions/how-tos/stateless/intro",
+            "ai-actions/how-tos/stateless/run-stateless-action"
+          ]
+        },
+        {
+          "group": "Gathering action information",
+          "pages": [
+            "ai-actions/how-tos/action-info/introduction",
+            "ai-actions/how-tos/action-info/find-app",
+            "ai-actions/how-tos/action-info/find-action",
+            "ai-actions/how-tos/action-info/choose-auth",
+            "ai-actions/how-tos/action-info/action-details",
+            "ai-actions/how-tos/action-info/prefill-choices"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        {
+          "group": "meta",
+          "pages": [
+            "ai-actions/api-reference/meta/app-health-check",
+            "ai-actions/api-reference/meta/check-user-auth",
+            "ai-actions/api-reference/meta/get-account-list"
+          ]
+        },
+        {
+          "group": "actions",
+          "pages": [
+            "ai-actions/api-reference/actions/search-apps",
+            "ai-actions/api-reference/actions/search-actions",
+            "ai-actions/api-reference/actions/get-app-details",
+            "ai-actions/api-reference/actions/list-authentications-for-app",
+            "ai-actions/api-reference/actions/get-action-details",
+            "ai-actions/api-reference/actions/get-prefill-choices"
+          ]
+        },
+        {
+          "group": "execution",
+          "pages": [
+            "ai-actions/api-reference/execution/execute-stateless-action",
+            "ai-actions/api-reference/execution/rate-execution-log"
+          ]
+        },
+        {
+          "group": "ai-actions",
+          "pages": [
+            "ai-actions/api-reference/ai-actions/list-ai-actions",
+            "ai-actions/api-reference/ai-actions/execute-ai-action",
+            "ai-actions/api-reference/ai-actions/preview-ai-action",
+            "ai-actions/api-reference/ai-actions/create-ai-action",
+            "ai-actions/api-reference/ai-actions/get-ai-action",
+            "ai-actions/api-reference/ai-actions/update-ai-action",
+            "ai-actions/api-reference/ai-actions/delete-ai-action"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Tools",
+      "pages": ["ai-actions/tools/stateless-action"]
+    },
+    {
+      "group": "Libraries",
+      "pages": [
+        {
+          "group": "TypeScript (Node.js, Deno)",
+          "icon": "node-js",
+          "pages": [
+            "ai-actions/libraries/nodejs/getting-started",
+            "ai-actions/libraries/nodejs/authentication",
+            "ai-actions/libraries/nodejs/usage",
+            "ai-actions/libraries/nodejs/nextjs-reccommendation"
+          ]
+        },
+        {
+          "group": "React Components",
+          "icon": "react",
+          "pages": [
+            "ai-actions/libraries/react/getting-started",
+            {
+              "group": "Components",
+              "pages": [
+                "ai-actions/libraries/react/ai-actions-provider",
+                "ai-actions/libraries/react/action-list",
+                "ai-actions/libraries/react/edit-action",
+                "ai-actions/libraries/react/stateless-creator"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Development Resources",
+      "pages": [
+        "ai-actions/developer-resources/openapi",
+        "ai-actions/developer-resources/keys",
+        "ai-actions/developer-resources/logs"
+      ]
+    },
+    {
+      "group": "Help",
+      "pages": ["ai-actions/help/community", "ai-actions/help/bug"]
+    }
   ],
   "footerSocials": {
     "facebook": "http://www.facebook.com/ZapierApp?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier",
