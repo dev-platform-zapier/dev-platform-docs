@@ -212,6 +212,10 @@
       "group": "Build with CLI",
       "pages": [
         "platform/build-cli/overview",
+        {
+          "group": "Features",
+          "pages": ["platform/build-cli/input-fields"]
+        },
         "platform/quickstart/cli-tutorial",
         "platform/reference/faqs",
         "platform/reference/cli",
