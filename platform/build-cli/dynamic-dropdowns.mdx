@@ -5,6 +5,8 @@ Sometimes, API endpoints require clients to specify a parent object in order to 
 
 Our solution is to present users a dropdown that is populated by making a live API call to fetch a list of parent objects. We call these special dropdowns "dynamic dropdowns."
 
+## Definition
+
 To define one you include the `dynamic` property on the `inputFields` object. The value for the property is a dot-separated *string* concatenation.
 
 ```js
@@ -55,7 +57,7 @@ In the above code example the dynamic property makes reference to a trigger with
 The dynamic dropdown would look something like this.
 ![screenshot of dynamic dropdown in Zap Editor](https://cdn.zappy.app/6a90fcc532704f6c14b91586f5cd1d5b.png)
 
-## Using resource as trigger
+## Use a resource
 
 In the first code example the dynamic dropdown is powered by a trigger. You can also use a resource to power a dynamic dropdown. To do this combine the resource key and the resource method using camel case.
 
@@ -102,7 +104,7 @@ const App = {
 };
 ```
 
-## Hiding the trigger
+## Hide the trigger
 
 In some cases you will need to power a dynamic dropdown but do not want to make the Trigger available to the end user. Here it is best practice to create the trigger and set `hidden: true` on it's display object.
 
@@ -183,9 +185,11 @@ const App = {
 
 The [Google Sheets](https://zapier.com/apps/google-sheets/integrations#triggers-and-actions) integration is an example of this pattern.
 
-## Custom behavior for dynamic dropdowns
+> Note: Even if a trigger to power a dynamic dropdown is hidden for direct use, you still need to define the input fields, and whether these are required. In the above example, when the Worksheet trigger defines a required `spreadsheet_id` field, products such as the editor will use this in two ways. Firstly, the worksheet field will be disabled until the spreadsheet field has been set. Secondly, when the user changes the spreadsheet field, the worksheet field gets cleared.
 
-If you want your trigger to perform specific scripting for a dynamic dropdown you will need to make use of `bundle.meta.isFillingDynamicDropdown`. This can be useful if need to make use of [pagination](#whats-the-deal-with-pagination-when-is-it-used-and-how-does-it-work) in the dynamic dropdown to load more options.
+## Detect when a trigger is used for a dynamic dropdown
+
+If you want your trigger to perform specific scripting for a dynamic dropdown you will need to make use of `bundle.meta.isFillingDynamicDropdown`. This can be useful if need to make use of [pagination](/platform/build-cli/faqs#whats-the-deal-with-pagination-when-is-it-used-and-how-does-it-work) in the dynamic dropdown to load more options.
 
 ```js
 const App = {
