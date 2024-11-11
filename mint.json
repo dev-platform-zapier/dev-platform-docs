@@ -636,6 +636,10 @@
     {
       "source": "/platform/build/dynamic-dropdowns",
       "destination": "/platform/build-cli/dynamic-dropdowns"
+    },
+    {
+      "source": "/platform/build/search-powered-fields",
+      "destination": "/platform/build-cli/dynamic-dropdowns"
     }
   ]
 }
