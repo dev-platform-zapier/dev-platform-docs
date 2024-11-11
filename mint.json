@@ -210,7 +210,9 @@
     {
       "group": "Build with CLI",
       "pages": [
-        "platform/build-cli/overview"
+        "platform/build-cli/overview",
+        "platform/reference/cli",
+        "platform/reference/schema"
       ]
     },
     {
