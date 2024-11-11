@@ -1,0 +1,310 @@
+## FAQs
+
+### Why doesn't Zapier support newer versions of Node.js?
+
+We run your code on AWS Lambda, which only supports a few [versions](https://docs.aws.amazon.com/lambda/latest/dg/programming-model.html) of Node. Sometimes that doesn't include the latest version. Additionally, with thousands of integrations running on the Zapier platform, we have to be sure upgrading to the latest Node version will not have a negative impact.
+
+### How do I manually set the Node.js version to run my integration with?
+
+Update your `zapier-platform-core` dependency in `package.json`. Each major version ties to a specific version of Node.js. You can find the mapping [here](https://github.com/zapier/zapier-platform/blob/main/packages/cli/src/version-store.js). We only support the version(s) supported by [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/programming-model.html).
+
+**IMPORTANT CAVEAT**: AWS periodically deprecates Node versions as they reach EOL. They announce this[on their blog](https://aws.amazon.com/blogs/developer/node-js-6-is-approaching-end-of-life-upgrade-your-aws-lambda-functions-to-the-node-js-10-lts/). Similar info and dates are available on [github](https://github.com/nodejs/Release). Well before this date, we'll have a version of `core` that targets the newer Node version.
+
+If you don't upgrade before the cutoff date, there's a chance that AWS will throw an error when attempting to run your integration's code. If that's the case, we'll instead run it under the oldest Node version still supported. All that is to say, **we may run your code on a newer version of Node.js than you intend** if you don't update your integration's dependencies periodically.
+
+### When to use placeholders or curlies?
+
+You will see both [template literal placeholders](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#Expression_interpolation) `${var}` and (double) "curlies" `{{var}}` used in examples.
+
+In general, use `${var}` within functions and use `{{var}}` anywhere else.
+
+Placeholders get evaluated as soon as the line of code is evaluated. This means that if you use `${process.env.VAR}` in a trigger configuration, `zapier push` will substitute it with your local environment's value for `VAR` when it builds your integration and the value set via `zapier env:set` will not be used.
+
+> If you're not familiar with [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals), know that `const val = "a" + b + "c"` is essentially the same as ``const val = `a$``{b}`` c` ``.
+
+### Does Zapier support XML (SOAP) APIs?
+
+Not natively, but it can! Users have reported that the following `npm` modules are compatible with the CLI Platform:
+
+* [pixl-xml](https://github.com/jhuckaby/pixl-xml)
+* [xml2js](https://github.com/Leonidas-from-XIV/node-xml2js)
+* [fast-xml-parser](https://github.com/NaturalIntelligence/fast-xml-parser)
+
+Since core v10, it's possible for [shorthand requests](#shorthand-http-requests) to parse XML. Use an `afterResponse` [middleware](#using-http-middleware) that sets `response.data` to the parsed XML:
+
+```js
+const xml = require("pixl-xml");
+
+const App = {
+  // ...
+  afterResponse: [
+    (response, z, bundle) => {
+      // Only works on core v10+!
+      response.throwForStatus();
+      response.data = xml.parse(response.content);
+      return response;
+    },
+  ],
+  // ...
+};
+```
+
+### Is it possible to iterate over pages in a polling trigger?
+
+Yes, though there are caveats. Your entire function only gets 30 seconds to run. HTTP requests are costly, so paging through a list may time out (which you should avoid at all costs).
+
+```js
+// some async call
+const makeCall = (z, start, limit) => {
+  return z.request({
+    url: "https://jsonplaceholder.typicode.com/posts",
+    params: {
+      _start: start,
+      _limit: limit,
+    },
+  });
+};
+
+// triggers on paging with a certain tag
+const performPaging = async (z, bundle) => {
+  // array of promises
+  const promises = [];
+
+  // 5 requests with page size = 3
+  let start = 0;
+  const limit = 3;
+  for (let i = 0; i < 5; i++) {
+    promises.push(makeCall(z, start, limit));
+    start += limit;
+  }
+
+  // send requests concurrently
+  const responses = await Promise.all(promises);
+  return responses.map((res) => res.data);
+};
+
+module.exports = {
+  key: "paging",
+  noun: "Paging",
+
+  display: {
+    label: "Get Paging",
+    description: "Triggers on a new paging.",
+  },
+
+  operation: {
+    inputFields: [],
+    perform: performPaging,
+  },
+};
+```
+
+If you need to do more requests conditionally based on the results of an HTTP call (such as the "next URL" param or similar value), using `async/await` (as shown in the example below) is a good way to go. If you go this route, only page as far as you need to. Keep an eye on the polling [guidelines](https://zapier.com/developer/documentation/v2/deduplication/), namely the part about only iterating until you hit items that have probably been seen in a previous poll.
+
+```js
+// a hypothetical API where payloads are big so we want to heavily limit how much comes back
+// we want to only return items created in the last hour
+
+const asyncExample = async (z, bundle) => {
+  const limit = 3;
+  let start = 0;
+  const twoHourMilliseconds = 60 * 60 * 2 * 1000;
+  const hoursAgo = new Date() - twoHourMilliseconds;
+
+  let response = await z.request({
+    url: "https://jsonplaceholder.typicode.com/posts",
+    params: {
+      _start: start,
+      _limit: limit,
+    },
+  });
+
+  let results = response.data; // response.json if you're using core v9 or older
+
+  // keep paging until the last item was created over two hours ago
+  // then we know we almost certainly haven't missed anything and can let
+  //   deduper handle the rest
+
+  while (new Date(results[results.length - 1].createdAt) > hoursAgo) {
+    start += limit; // next page
+
+    response = await z.request({
+      url: "https://jsonplaceholder.typicode.com/posts",
+      params: {
+        _start: start,
+        _limit: limit,
+      },
+    });
+
+    results = results.concat(response.data);
+  }
+
+  return results;
+};
+```
+
+<a id="paging" />
+
+### What's the deal with pagination? When is it used and how does it work?
+
+Paging is **only used when a trigger is part of a dynamic dropdown**. Depending on how many items exist and how many are returned in the first poll, it's possible that the resource the user is looking for isn't in the initial poll. If they hit the "see more" button, we'll increment the value of `bundle.meta.page` and poll again.
+
+Paging is a lot like a regular trigger except the range of items returned is dynamic. The most common example of this is when you can pass a `offset` parameter:
+
+```js
+const perform = async (z, bundle) => {
+  const response = await z.request({
+    url: "https://example.com/api/list.json",
+    params: {
+      limit: 100,
+      offset: 100 * bundle.meta.page,
+    },
+  });
+  return response.data; // or response.json you're using core v9 or older
+};
+```
+
+If your API uses cursor-based paging instead of an offset, you can use `z.cursor.get` and `z.cursor.set`:
+
+```js
+const perform = async (z, bundle) => {
+  let cursor;
+
+  // if fetching a page other than the first (first page is 0),
+  // get the cursor stored after fetching the previous page.
+  if (bundle.meta.page > 0) {
+    cursor = await z.cursor.get();
+
+    // if the previous page was the last one and cursor is empty/null,
+    // return an empty array.
+    if (!cursor) {
+      return [];
+    }
+  }
+
+  const response = await z.request(
+    "https://5ae7ad3547436a00143e104d.mockapi.io/api/recipes",
+    {
+      // cursor typically is a param to pass along to the next request,
+      // or the full URL for the next page of items.
+      params: { cursor },
+    }
+  );
+
+  // after fetching a page, set the returned cursor for the next page,
+  // or an empty string if the cursor is null
+  await z.cursor.set(response.nextPage ?? "");
+
+  return response.items;
+};
+```
+
+Cursors are stored per-zap and last about an hour. Per the above, make sure to only include the cursor if `bundle.meta.page > 0`, so you don't accidentally reuse a cursor from a previous poll.
+
+Lastly, you need to set `canPaginate` to `true` in your polling definition (per the [schema](https://github.com/zapier/zapier-platform/blob/main/packages/schema/docs/build/schema.md#basicpollingoperationschema)) for the `z.cursor` methods to work as expected.
+
+<a id="dedup" />
+
+### How does deduplication work?
+
+Each time a polling Zap runs, Zapier extracts a unique "primary key" for each item in the response. Zapier needs to decide which of the items should trigger the Zap. To do this, we compare the primary keys to all those we've seen before, trigger on new objects, and update the list of seen primary keys. When a Zap is turned on, we initialize the list of seen primary keys with a single poll. When it's turned off, we clear that list. For this reason, it's important that calls to a polling endpoint always return the newest items.
+
+For example, the initial poll returns objects 4, 5, and 6 (where a higher primary key is newer). If a later poll increases the limit and returns objects 1-6, then 1, 2, and 3 will be (incorrectly) treated like new objects.
+
+By default, the primary key is the item's `id` field. Since v15.6.0, you can customize the primary key by setting `primary` to true in `outputFields`.
+
+There's a more in-depth explanation [here](https://platform.zapier.com/build/deduplication).
+
+### Why are my triggers complaining if I don't provide an explicit `id` field?
+
+For deduplication to work, we need to be able to identify and use a unique field. In older, legacy Zapier Web Builder integrations, we guessed if `id` wasn't present. In order to ensure we don't guess wrong, we now require that the developers send us an `id` field. If your objects have a differently-named unique field, feel free to adapt this snippet and ensure this test passes:
+
+```js
+// ...
+let items = response.data.items; // or response.json.items if you're using core v9 or older
+return items.map((item) => {
+  item.id = item.contactId;
+  return item;
+});
+```
+
+Since v15.6.0, instead of using the default `id` field, you can also define one or more `outputFields` as `primary`. For example:
+
+```js
+{
+  triggers: {
+    recipe: {
+      operation: {
+        outputField: [
+          { key: "userId", primary: true },
+          { key: "slug", primary: true },
+          { key: "name" },
+        ];
+      }
+    }
+  }
+}
+```
+
+will tell Zapier to use `(userId, slug)` as the unique primary key to deduplicate items when running a polling trigger.
+
+**Limitation:** The `primary` option currently doesn't support mixing top-level fields with nested fields that use double underscores in their keys. For example, if you set `primary: true` on both `id` and `user__id`, the `primary` setting on the `user__id` field will be ignored; only `id` will be used for deduplication. However, if all the `primary` fields are all nested, such as `user__id` + `user__name`, it will work as expected.
+
+---
+title: Frequently Asked Questions
+sidebarTitle: FAQs
+---
+
+### Node X No Longer Supported
+
+If you're seeing errors like the following:
+
+```
+InvalidParameterValueException An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The runtime parameter of nodejs6.10 is no longer supported for creating or updating AWS Lambda functions. We recommend you use the new runtime (nodejsX.Y) while creating or updating functions.
+```
+
+... then you need to update your `zapier-platform-core` dependency to a non-deprecated version that uses a newer version of Node.js. Complete the following instructions as soon as possible:
+
+1. Edit `package.json` to depend on a later major version of `zapier-platform-core`. There's a list of all breaking changes (marked with a :exclamation:) in the [changelog](https://github.com/zapier/zapier-platform/blob/main/CHANGELOG.md).
+2. Increment the `version` property in `package.json`
+3. Ensure you're using version `v18` (or greater) of node locally (`node -v`). Use [nvm](https://github.com/nvm-sh/nvm) to use a different one if need be.
+4. Run `rm -rf node_modules && npm i` to get a fresh copy of everything
+5. Run `zapier test` to ensure your tests still pass
+6. Run `zapier push`
+7. Run `zapier promote YOUR_NEW_VERSION` (from step 2)
+8. Migrate your users from the previous version (`zapier migrate OLD_VERSION YOUR_NEW_VERSION`)
+
+<a id="analytics" />
+
+### What Analytics are Collected?
+
+Starting with v8.4.0, Zapier collects information about each invocation of the CLI tool.
+
+This data is collected purely to improve the CLI experience and will **never** be used for advertising or any non-product purpose. There are 3 collection modes that are set on a per-computer basis.
+
+**Anonymous**
+
+When you run a command with analytics in `anonymous` mode, the following data is sent to Zapier:
+
+* which command you ran
+* if that command is a known command
+* how many arguments you supplied (but not the contents of the arguments)
+* which flags you used (but not their contents)
+* the version of CLI that you're using
+
+**Enabled** (the default)
+
+When analytics are fully `enabled`, the above is sent, plus:
+
+* your operating system (the result of calling [`process.platform`](https://nodejs.org/api/process.html#process_process_platform))
+* your Zapier user id
+
+**Disabled**
+
+Lastly, analytics can be `disabled` entirely, either by running `zapier analytics --mode disabled` or setting the `DISABLE_ZAPIER_ANALYTICS` environment variable to `1`.
+
+We take great care not to collect any information about your filesystem or anything otherwise secret. You can see exactly what's being collecting at runtime by prefixing any command with `DEBUG=zapier:analytics`.
+
+### What's the Difference Between an "App" and an "Integration"?
+
+We're in the process of doing some renaming across our Zapier marketing terms. Eventually we'll use "integration" everywhere. Until then, know that these terms are interchangeable and describe the code that you write that connects your API to Zapier.
