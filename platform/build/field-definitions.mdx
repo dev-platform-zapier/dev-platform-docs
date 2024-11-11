@@ -16,10 +16,13 @@ Input fields are most commonly used and include 9 types that look and act differ
 The default input field, which accepts text input. Typically used to gather individual text values such as a name or email address.
 
 <Frame> <img src="/images/b6abd9f3b9048e4a0b8010c79ac78ca7.png" /> </Frame>
+
 ### Text
 
 Displays large, `<textarea>`\-style entry box, accepts longer text input. Often used to enter notes.
+
 <Frame> <img src="/images/6936573528e1c7dc72b33e5b8178aac7.png" /> </Frame>
+
 ### Integer
 
 Accepts integer number values, shown with a `1 2 3` tag beside the field in Zaps. Typically used along with a dropdown type field to select ID numbers for objects in your app, also used to gather whole numbers.
@@ -61,14 +64,15 @@ Users enter their own value sets, with a plain text name followed by a String fi
 Does not allow users enter data and is not passed to your app's API. Shows the Help Text field copy in a display-only formatted note, with no input field. Supports [Markdown](https://zapier.com/blog/beginner-ultimate-guide-markdown/). Typically used for important notices to users.
 
 <Frame> <img src="/images/eebc20fad3362197a0448edd8a52e27e.png" /> </Frame>
+
 ## Dynamic fields
 
-Dynamic fields make a request to your app's API, showing the returned data in a dropdown menu in live time. Users select the object needed. Typically used for folders, projects, assignees, and other data that would need to be chosen from within your app. Only available in Platform UI actions.
+<Warning>This feature is only available in the Platform CLI.</Warning>
+
+Dynamic fields make a request to your app's API, showing the returned data in a dropdown menu in live time. Users select the object needed. Typically used for folders, projects, assignees, and other data that would need to be chosen from within your app.
 
 ## Line item groups
 
-Line item groups allow users to input line items provided from the trigger or prior action. Those items will then be sent in the request as an array of individual objects. Users cannot input comma separated values into a line item field, they need to be provided from the trigger or a prior action in line item format for them to be sent this way. Typically used to add multiple lines of similar details to an app, for example in invoice and accounting apps. Only available in [Platform UI actions](/platform/quickstart/ui-vs-cli).
+<Warning>This feature is only available in the Platform CLI.</Warning>
 
-- - -
-
-_Need help? [Tell us about your problem](https://developer.zapier.com/contact) and we'll connect you with the right resource or contact support._
+Line item groups allow users to input line items provided from the trigger or prior action. Those items will then be sent in the request as an array of individual objects. Users cannot input comma separated values into a line item field, they need to be provided from the trigger or a prior action in line item format for them to be sent this way. Typically used to add multiple lines of similar details to an app, for example in invoice and accounting apps.
