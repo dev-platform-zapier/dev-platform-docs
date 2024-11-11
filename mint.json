@@ -217,8 +217,8 @@
             {
               "group": "Input Fields",
               "pages": [
-                "platform/build/field-definitions",
                 "platform/build-cli/input-fields",
+                "platform/build/field-definitions",
                 "platform/build-cli/dynamic-dropdowns"
               ]
             }
