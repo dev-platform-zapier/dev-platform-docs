@@ -109,8 +109,9 @@
       ]
     },
     {
-      "group": "Build",
+      "group": "Build with UI",
       "pages": [
+        "platform/quickstart/ui-tutorial",
         {
           "group": "Actions",
           "pages": [
@@ -211,6 +212,7 @@
       "group": "Build with CLI",
       "pages": [
         "platform/build-cli/overview",
+        "platform/quickstart/cli-tutorial",
         "platform/reference/cli",
         "platform/reference/schema"
       ]
