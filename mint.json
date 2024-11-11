@@ -225,7 +225,7 @@
           ]
         },
         "platform/quickstart/cli-tutorial",
-        "platform/reference/faqs",
+        "platform/build-cli/faqs",
         "platform/reference/cli",
         "platform/reference/schema"
       ]
