@@ -208,6 +208,12 @@
       ]
     },
     {
+      "group": "Build with CLI",
+      "pages": [
+        "platform/build-cli/overview"
+      ]
+    },
+    {
       "group": "Manage",
       "pages": [
         {
@@ -612,5 +618,11 @@
     "linkedin": "https://www.linkedin.com/company/zapier/?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier",
     "x": "https://twitter.com/zapier?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier#!/zapier",
     "youtube": "https://www.youtube.com/user/ZapierApp/videos?utm_source=zapier.com&amp;utm_medium=referral&amp;utm_campaign=zapier"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/platform/reference/cli-docs",
+      "destination": "/platform/build-cli/overview"
+    }
+  ]
 }
