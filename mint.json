@@ -211,8 +211,14 @@
     {
       "group": "Build with CLI",
       "pages": [
-        "platform/build-cli/overview",
-        "platform/quickstart/cli-tutorial",
+        {
+          "name": "Overview",
+          "url": "platform/build-cli/overview"
+        },
+        {
+          "name": "Tutorial",
+          "url": "platform/quickstart/cli-tutorial"
+        },
         "platform/reference/cli",
         "platform/reference/schema"
       ]
