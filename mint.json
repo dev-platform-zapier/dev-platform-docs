@@ -24,7 +24,8 @@
   },
   "openapi": [
     "https://actions.zapier.com/api/v2/openapi.json",
-    "https://api.zapier.com/schema"
+    "https://api.zapier.com/schema",
+    "partner-solutions/actionsAPIOpenapi"
   ],
   "anchors": [
     {

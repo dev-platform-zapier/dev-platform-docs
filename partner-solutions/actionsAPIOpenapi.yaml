@@ -1,0 +1,497 @@
+openapi: 3.1.0
+info:
+  title: Stored Actions API
+  version: v1
+  description: |
+    API for creating, executing, and fetching results for a Stored Action.
+
+    A Stored Action is a single, repeatable configuration that can been called
+    repeatedly to execute the same action.
+
+    As an example, you could create a StoredAction that sends a message to a
+    specific channel in Slack. Every time that action is executed, a message will
+    be sent to the pre-configured channel in Slack.
+
+    **Authentication:** Service-only JWTs
+    # Key Terminology
+    - `stored_action`: A pre-configured action connected to a SelectedAPI and executable
+      action that can be called repeatedly.
+  contact:
+    url: https://app.opslevel.com/services/stored_actions_api
+paths:
+  /actions/v1/runs/{run_id}:
+    get:
+      operationId: actions_v1_runs_retrieve
+      description: |-
+        Fetch Stored Action Results
+
+        Requires the id returned from a call to /run to execute the stored action.
+
+        The status code returned by this call does NOT denote the status of the action
+        in an external system, but the status of the action processing from Zapier.
+
+        Results are stored for seven days after the action was initially executed.
+      summary: Fetch the results of a StoredAction run
+      parameters:
+      - in: path
+        name: run_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Stored Actions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsRetrieveResponse'
+              examples:
+                Success:
+                  value:
+                    data:
+                      type: run
+                      status: success
+                      results:
+                      - key: value
+                      next_page: 0
+                      errors: []
+          description: 'Success: Includes the results of the task run.'
+        '202':
+          description: The request is still processing, try fetching results again
+            later.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsErrorResponse'
+              examples:
+                Error:
+                  value:
+                    errors:
+                    - status: 404
+                      code: not_found
+                      title: Resource not found.
+                      detail: Here's a more readable explanation of what happened.
+                      source: zapier
+                      meta: {}
+          description: No results found for this run.
+  /actions/v1/stored_actions:
+    post:
+      operationId: actions_v1_stored_actions_create
+      description: |-
+        Create Stored Action
+
+        Creates a new stored action entry that can then be executed from a simpler call to
+        /stored_actions with just the stored action `id`.
+
+        This will not execute a StoredAction.
+
+        This is an async process and will only respond with the id of the stored action and other meta data,
+        and it is the callers responsibility to poll with id returned from calling /run to fetch the
+        results after executing a stored action.
+
+        Either an action_id or the triple (selected_api, action_type, action_key) is required to create a
+        stored action
+      summary: Create a StoredAction
+      tags:
+      - Stored Actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoredActionsCreateRequest'
+            examples:
+              ExamplePOSTRequest:
+                value:
+                  data:
+                    authentication_id: 5678
+                    action_id: core:1234
+                    selected_api: SplitwiseCLIAPI@1.0.0
+                    action_key: new_contact
+                    action_type: read
+                    inputs:
+                      first_name: John
+                      last_name: Doe
+                summary: Example POST Request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StoredActionsCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StoredActionsCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsCreateResponse'
+              examples:
+                Success:
+                  value:
+                    data:
+                      type: stored_action
+                      id: 123e4567-e89b-12d3-a456-426614174000
+          description: A StoredAction record was successfully created.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsErrorResponse'
+              examples:
+                BadRequest:
+                  value:
+                    errors:
+                    - status: 400
+                      code: bad_request
+                      detail: Improperly formatted or incompleted request
+                  summary: Bad Request
+          description: Indicates an error creating a StoredAction record.
+  /actions/v1/stored_actions/{stored_action_id}/run:
+    post:
+      operationId: actions_v1_stored_actions_run_create
+      description: |-
+        Execute Stored Action
+
+        Executes an action on behalf of a user, this is an async process.
+
+        Requires the id from a stored action
+
+        Responds with the unique id for this run of the stored action. In order to fetch results
+        you will need to poll the GET /runs/{run_id} endpoint with that run id.
+      summary: Execute a StoredAction
+      parameters:
+      - in: path
+        name: stored_action_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Stored Actions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoredActionsRunRequest'
+            examples:
+              ExamplePOSTRequest:
+                value:
+                  data:
+                    inputs:
+                      message: Hello World!
+                    page: 0
+                summary: Example POST Request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StoredActionsRunRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StoredActionsRunRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsRunResponse'
+              examples:
+                Accepted:
+                  value:
+                    data:
+                      type: run
+                      id: 123e4567-e89b-12d3-a456-426614174000
+          description: Acknowledges the request to execute a StoredAction
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoredActionsErrorResponse'
+              examples:
+                BadRequest:
+                  value:
+                    errors:
+                    - status: 400
+                      code: bad_request
+                      detail: Improperly formatted or incompleted request
+                  summary: Bad Request
+          description: Indicates an error executing the request to run a StoredAction.
+components:
+  schemas:
+    ActionTypeEnum:
+      enum:
+      - read
+      - read_bulk
+      - write
+      type: string
+      description: |-
+        * `read` - read
+        * `read_bulk` - read_bulk
+        * `write` - write
+    CodeEnum:
+      enum:
+      - user
+      - authentication
+      - partner
+      - system
+      - throttled
+      - system_throttled
+      - hydration
+      type: string
+      description: |-
+        * `user` - user
+        * `authentication` - authentication
+        * `partner` - partner
+        * `system` - system
+        * `throttled` - throttled
+        * `system_throttled` - system_throttled
+        * `hydration` - hydration
+    RetrieveParams:
+      type: object
+      properties:
+        type:
+          type: string
+          default: run
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          description: |-
+            The result of the action call itself from the partner. You could have a success=True (Zapier succeeded) and status=error (the partner raise an error).
+
+            * `error` - error
+            * `success` - success
+            * `waiting` - waiting
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          description: Could be empty, even if the action was successfully run.
+        next_page:
+          type: string
+          description: When using bulk read action types, this denotes the state of
+            the paging utilities. Pass it back into the stored_actions endpoint.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoredActionsFetchError'
+      required:
+      - errors
+    StatusEnum:
+      enum:
+      - error
+      - success
+      - waiting
+      type: string
+      description: |-
+        * `error` - error
+        * `success` - success
+        * `waiting` - waiting
+    StoredActionsCreateRequest:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/StoredActionsRequestParams'
+      required:
+      - data
+    StoredActionsCreateResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/StoredActionsCreateResponseParams'
+      required:
+      - data
+    StoredActionsCreateResponseParams:
+      type: object
+      properties:
+        type:
+          type: string
+          default: stored_action
+        id:
+          type: string
+          description: The UUID id that identifies this stored action and can be used
+            to execute the stored procedure by calling the POST /stored_actions/{stored_action_id}/run
+            endpoint.
+      required:
+      - id
+    StoredActionsError:
+      type: object
+      description: Base Error definition
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code applicable to this problem.
+        code:
+          type: string
+          description: A unique identifier for this particular occurrence of the problem.
+        title:
+          type: string
+          description: A short summary of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of
+            the problem.
+        source:
+          oneOf:
+          - $ref: '#/components/schemas/StoredActionsErrorSource'
+          - type: 'null'
+          description: An object containing references to the primary source of the
+            error.
+        meta:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+    StoredActionsErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoredActionsError'
+          description: An array of error objects.
+      required:
+      - errors
+    StoredActionsErrorSource:
+      type: object
+      description: Populates the `source` object inside our error responses.
+      properties:
+        pointer:
+          type: string
+          description: Pointer to the value in the request document that caused the
+            error e.g. `/actions`.
+        parameter:
+          type: string
+          description: A string indicating which URI query parameter caused the error.
+        header:
+          type: string
+          description: A string indicating the name of a single request header which
+            caused the error.
+    StoredActionsFetchError:
+      type: object
+      properties:
+        code:
+          allOf:
+          - $ref: '#/components/schemas/CodeEnum'
+          description: |-
+            Error type of the result object.
+
+            * `user` - user
+            * `authentication` - authentication
+            * `partner` - partner
+            * `system` - system
+            * `throttled` - throttled
+            * `system_throttled` - system_throttled
+            * `hydration` - hydration
+        title:
+          type: string
+          description: A short summary of the problem.
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of
+            the problem.
+        delay:
+          type: integer
+          description: When a partner throttled the execution call (error_type = throttled),
+            this value will hold the number of seconds to wait before retrying.
+        meta:
+          type:
+          - object
+          - 'null'
+          additionalProperties: {}
+    StoredActionsRequestParams:
+      type: object
+      description: |-
+        The shape of a payload that must be sent to the stored actions endpoint in order to create
+        an action. This will create an execuatable action on a partner integration.
+      properties:
+        authentication_id:
+          type: integer
+          description: If the app needs auth, provide an `authentication_id` that
+            has the `selected_api` of the app you want to run. Can be any auth visible
+            to the user (including shared).
+        action_id:
+          type: string
+          description: The specific action_id to be used to build the StoredAction,
+            such as `core:1234`
+        selected_api:
+          type: string
+          description: Something like `SlackAPI` (for Python apps) or `SplitwiseCLIAPI@1.0.0`
+            (for CLI apps). Non-public apps are fine as long as the authed user can
+            access them. If a version is included we attempt to use that version of
+            the integration.  If no version is provided we attempt to use the latest
+            version of the integration
+        action_key:
+          type: string
+          description: Name of the action in the integration. Such as `new_contact`.
+        action_type:
+          allOf:
+          - $ref: '#/components/schemas/ActionTypeEnum'
+          description: |-
+            Specifies the type of action in the integration since some integrations could have similarly named actions with different actions types
+
+            * `read` - read
+            * `read_bulk` - read_bulk
+            * `write` - write
+        inputs:
+          default: {}
+          description: Object that matches the input the action would normally get.
+            Has all the same keys/types as the `input` of the action. (Formerly known
+            as "needs" in some documentation)
+    StoredActionsRetrieveResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RetrieveParams'
+      required:
+      - data
+    StoredActionsRunRequest:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/StoredActionsRunRequestInput'
+      required:
+      - data
+    StoredActionsRunRequestInput:
+      type: object
+      properties:
+        inputs:
+          default: {}
+          description: Object that matches the input the action would normally get.
+            Has all the same keys/types as the `input` of the action. (Formerly known
+            as "needs" in some documentation) Specifically includes more "dynamic"
+            information to execute such as a specific message when triggering an action
+            that sends a Slack DM, for example.
+        page:
+          type: string
+          description: 'When using bulk read action types, this denotes the state
+            of the paging utilities. Pass it back into the stored_actions endpoint. '
+    StoredActionsRunResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/StoredActionsRunResponseParams'
+      required:
+      - data
+    StoredActionsRunResponseParams:
+      type: object
+      properties:
+        type:
+          type: string
+          default: run
+        id:
+          type: string
+          description: The UUID id that identifies this run of the execution and can
+            be used to retrieve the results by polling the GET /runs/{run_id} endpoint.
+servers:
+- url: https://zapier.com/api/
+  description: Production
+- url: https://zapier-staging.com/api/
+  description: Staging
+- url: http://localhost:8000/api/
+  description: Local Development
+tags:
+- name: Stored Actions
+  description: Operations related to a Stored Action
