@@ -590,13 +590,6 @@
             "ai-actions/api-reference/utilities/guess-actions",
             "ai-actions/api-reference/utilities/shrink-result"
           ]
-        },
-        {
-          "group": "unfurl",
-          "pages": [
-            "ai-actions/api-reference/unfurl/list-unfurl-apps-and-their-url-patterns",
-            "ai-actions/api-reference/unfurl/unfurl-urls-into-data-resources"
-          ]
         }
       ]
     },
