@@ -535,20 +535,32 @@
       "group": "API Reference",
       "pages": [
         {
-          "group": "meta",
+          "group": "system",
           "pages": [
-            "ai-actions/api-reference/meta/app-health-check",
-            "ai-actions/api-reference/meta/check-user-auth",
-            "ai-actions/api-reference/meta/get-account-list"
+            "ai-actions/api-reference/system/app-health-check"
+          ]
+        },
+        {
+          "group": "auth",
+          "pages": [
+            "ai-actions/api-reference/auth/check-user-auth",
+            "ai-actions/api-reference/auth/get-account-list",
+            "ai-actions/api-reference/auth/get-user-login-link",
+            "ai-actions/api-reference/auth/get-oauth-login-link"
+          ]
+        },
+        {
+          "group": "apps",
+          "pages": [
+            "ai-actions/api-reference/apps/search-apps",
+            "ai-actions/api-reference/apps/get-app-details",
+            "ai-actions/api-reference/apps/list-authentications-for-app"
           ]
         },
         {
           "group": "actions",
           "pages": [
-            "ai-actions/api-reference/actions/search-apps",
             "ai-actions/api-reference/actions/search-actions",
-            "ai-actions/api-reference/actions/get-app-details",
-            "ai-actions/api-reference/actions/list-authentications-for-app",
             "ai-actions/api-reference/actions/get-action-details",
             "ai-actions/api-reference/actions/get-prefill-choices"
           ]
@@ -556,7 +568,9 @@
         {
           "group": "execution",
           "pages": [
-            "ai-actions/api-reference/execution/execute-stateless-action",
+            "ai-actions/api-reference/execution/execute-stateless-ai-action",
+            "ai-actions/api-reference/execution/execute-stored-ai-action",
+            "ai-actions/api-reference/execution/preview-stored-ai-action",
             "ai-actions/api-reference/execution/rate-execution-log"
           ]
         },
@@ -564,12 +578,17 @@
           "group": "ai-actions",
           "pages": [
             "ai-actions/api-reference/ai-actions/list-ai-actions",
-            "ai-actions/api-reference/ai-actions/execute-ai-action",
-            "ai-actions/api-reference/ai-actions/preview-ai-action",
             "ai-actions/api-reference/ai-actions/create-ai-action",
             "ai-actions/api-reference/ai-actions/get-ai-action",
             "ai-actions/api-reference/ai-actions/update-ai-action",
             "ai-actions/api-reference/ai-actions/delete-ai-action"
+          ]
+        },
+        {
+          "group": "utilities",
+          "pages": [
+            "ai-actions/api-reference/utilities/guess-actions",
+            "ai-actions/api-reference/utilities/shrink-result"
           ]
         }
       ]

@@ -9,7 +9,7 @@ openapi: post /api/v2/apps/{app}/actions/{action}/
 
 "Sample" is a sample of what the action returns when it is run.
 
-When you [Run a stateless action](/guides/how-tos/stateless/run-stateless-action), "needs" are provided to the endpoint. For each need, you can either have AI guess a value for it or you can ask the user to provide a specific value.
+When you [Run a stateless action](/ai-actions/how-tos/stateless/run-stateless-action), "needs" are provided to the endpoint. For each need, you can either have AI guess a value for it or you can ask the user to provide a specific value.
 
 ## Custom fields
 
@@ -51,7 +51,7 @@ As an example, when using the `GoogleSheetsV2API` API with the `add_row` action,
 }
 ```
 
-In order to get the column names of the spreadsheet, you'll have to get the prefill choices. See [Get Prefill Choices](/guides/how-tos/action-info/prefill-choices) for more information.
+In order to get the column names of the spreadsheet, you'll have to get the prefill choices. See [Get Prefill Choices](/ai-actions/how-tos/action-info/prefill-choices) for more information.
 
 In this example scenario, after getting values for the `spreadsheet` and `worksheet` prefills, another call can be made to this endpoint.
 
@@ -130,4 +130,4 @@ For example, the `SlackAPI` API's `direct_message` action contains the following
 
 ## Other field types
 
-See [Field definitions and types](https://platform.zapier.com/build/field-definitions) in the Zapier Platform documentation for details on the other types of fields that a need can have.
+See [Field definitions and types](/platform/build/field-definitions) in the Zapier Platform documentation for details on the other types of fields that a need can have.

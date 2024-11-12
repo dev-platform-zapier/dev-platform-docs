@@ -10,7 +10,7 @@ Below are a few examples of common uses for the client.
 
 # Creating a client
 
-See the [authentication guide](/guides/libraries/nodejs/authentication) for more information on how to authenticate.
+See the [authentication guide](/ai-actions/libraries/nodejs/authentication) for more information on how to authenticate.
 
 ```ts
 import { AiActions } from "@zapier/ai-actions";
@@ -58,7 +58,7 @@ try {
 
 # Listing a user's actions
 
-Actions can be created or edited either on the [AI Actions website](https://actions.zapier.com/providers/) or using the [`@zapier/ai-actions-react` library](/guides/libraries/react/getting-started)
+Actions can be created or edited either on the [AI Actions website](https://actions.zapier.com/providers/) or using the [`@zapier/ai-actions-react` library](/ai-actions/libraries/react/getting-started)
 
 ```ts
 const actionList = await aiActionsClient.getActionList();
@@ -72,7 +72,7 @@ actionList?.results.forEach((action) => {
 
 # Executig an action
 
-See the [Run a stored action guide](/guides/how-tos/stored/run-stored-action) for more information on the available parameters.
+See the [Run a stored action guide](/ai-actions/how-tos/stored/run-stored-action) for more information on the available parameters.
 
 ```ts
 const result = await aiActionsClient.executeAction(
