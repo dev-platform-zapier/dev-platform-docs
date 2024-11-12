@@ -2,7 +2,7 @@
 title: ActionList
 ---
 
-The `ActionList` component can be used to list all of the current [stored actions](/guides/how-tos/stored/intro) that are available for a user.
+The `ActionList` component can be used to list all of the current [stored actions](/ai-actions/how-tos/stored/intro) that are available for a user.
 
 If you are using an API key for authentication, then the stored actions listed will be only for that API Key.
 
@@ -14,16 +14,16 @@ If you are using OAuth for authentication, then the stored actions listed will o
 
 This is called when the user clicks on an action in the list. It is passed the `AiAction` object that was clicked.
 
-See the [List stored actions](/guides/how-tos/stored/list-actions) documentation for more information about what this object contains.
+See the [List stored actions](/ai-actions/how-tos/stored/list-actions) documentation for more information about what this object contains.
 
 ## Usage
 
 <Warning>
   Make sure that this component is rendered unerneath an
-  [`AiActionsProvider`](/guides/libraries/react/ai-actions-provider)!
+  [`AiActionsProvider`](/ai-actions/libraries/react/ai-actions-provider)!
 </Warning>
 
-See [EditAction and CreateAction](/guides/libraries/react/edit-action) for a more complete example of usage.
+See [EditAction and CreateAction](/ai-actions/libraries/react/edit-action) for a more complete example of usage.
 
 ```tsx ai-action-list.tsx
 import { AiAction } from "@zapier/ai-actions";

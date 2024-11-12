@@ -8,13 +8,13 @@ The `StatelessActionCreator` component can be used to create a new stateless act
 
 ### `onActionGenerated`
 
-This callback will contain JSON that can be passed, along with instructions, to the [execute statless action](/guides/how-tos/stateless/run-stateless-action) endpoint.
+This callback will contain JSON that can be passed, along with instructions, to the [execute statless action](/ai-actions/how-tos/stateless/run-stateless-action) endpoint.
 
 ## Usage
 
 <Warning>
   Make sure that this component is rendered unerneath an
-  [`AiActionsProvider`](/guides/libraries/react/ai-actions-provider)!
+  [`AiActionsProvider`](/ai-actions/libraries/react/ai-actions-provider)!
 </Warning>
 
 ```tsx stateless-action-creator.tsx
@@ -30,7 +30,7 @@ export const StatelessActionCreatorExample = () => {
 };
 ```
 
-This JSON can then be used with [the Node.js client](/guides/libraries/nodejs/getting-started) to execute a stateless action:
+This JSON can then be used with [the Node.js client](/ai-actions/libraries/nodejs/getting-started) to execute a stateless action:
 
 ```ts execute-stateless-action.ts
 import { AiActions, StatelessAction } from "@zapier/ai-actions";
@@ -59,4 +59,4 @@ console.log(result);
 
 ## Example
 
-[See the "Stateless action creator/runner" tool for a full example](/guides/tools/stateless-action)
+[See the "Stateless action creator/runner" tool for a full example](/ai-actions/tools/stateless-action)

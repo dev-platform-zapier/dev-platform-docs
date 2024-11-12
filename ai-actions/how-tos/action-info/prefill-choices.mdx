@@ -3,13 +3,13 @@ title: Get prefill choices
 openapi: post /api/v2/apps/{app}/choices/{prefill}/
 ---
 
-If a need that comes back from the [Get Action Details](/api-reference/actions/get-action-details) endpoint has a `prefill` key, then this endpoint can be used to get the choices for that prefill.
+If a need that comes back from the [Get Action Details](/ai-actions/how-tos/action-info/action-details) endpoint has a `prefill` key, then this endpoint can be used to get the choices for that prefill.
 
 ## Dependent needs
 
 If a need has any values in its `depends_on` array, the values for each of the needs in `depends_on` _must_ be included in the `params` in the body of the `POST` to get prefill choices.
 
-As an example, the `action_needs` list for the `add_row` action for the `GoogleSheetsV2API` app from [Get action details and needs](/guides/how-tos/action-info/action-details) includes a `spreadsheet` and a `worksheet` need:
+As an example, the `action_needs` list for the `add_row` action for the `GoogleSheetsV2API` app from [Get action details and needs](/ai-actions/how-tos/action-info/action-details) includes a `spreadsheet` and a `worksheet` need:
 
 ```json
 {
