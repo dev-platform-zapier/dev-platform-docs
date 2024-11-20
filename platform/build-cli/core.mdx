@@ -7,41 +7,41 @@ Most functions get called with `(z, bundle)`. This document is a reference for h
 
 > If you use TypeScript, you can import `ZObject`, `Bundle<InputFields>` and `PerformFunction<InputFields>` from `zapier-platform-core`.
 
-# `z` Object
+## `z` Object
 
 We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your integration.
 
 > The `z` object is passed into your functions as the first argument - IE: `perform: (z) => {}`.
 
-## `z.request([url], options)`
+### `z.request([url], options)`
 
 `z.request([url], options)` is a promise based HTTP client with some Zapier-specific goodies. See [Making HTTP Requests](#making-http-requests). `z.request()` will [percent-encode](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) non-ascii characters and these reserved characters: ``:$/?#[]@$&+,;=^@`\``. Use [`skipEncodingChars`](https://github.com/zapier/zapier-platform/blob/main/packages/schema/docs/build/schema.md#requestschema) to modify this behaviour.
 
-## `z.console`
+### `z.console`
 
 `z.console.log(message)` is a logging console, similar to Node.js `console` but logs remotely, as well as to stdout in tests. See [Log Statements](#console-logging)
 
-## `z.dehydrate(func, inputData)`
+### `z.dehydrate(func, inputData)`
 
 `z.dehydrate(func, inputData)` is used to lazily evaluate a function, perfect to avoid API calls during polling or for reuse. See [Dehydration](#dehydration).
 
-## `z.dehydrateFile(func, inputData)`
+### `z.dehydrateFile(func, inputData)`
 
 `z.dehydrateFile` is used to lazily download a file, perfect to avoid API calls during polling or for reuse. See [File Dehydration](#file-dehydration).
 
-## `z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`
+### `z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])`
 
 `z.stashFile(bufferStringStream, [knownLength], [filename], [contentType])` is a promise based file stasher that returns a URL file pointer. See [Stashing Files](#stashing-files).
 
-## `z.JSON`
+### `z.JSON`
 
 `z.JSON` is similar to the JSON built-in like `z.JSON.parse('...')`, but catches errors and produces nicer tracebacks.
 
-## `z.hash()`
+### `z.hash()`
 
 `z.hash()` is a crypto tool for doing things like `z.hash('sha256', 'my password')`
 
-## `z.errors`
+### `z.errors`
 
 `z.errors` is a collection error classes that you can throw in your code, like `throw new z.errors.HaltedError('...')`.
 
@@ -59,7 +59,7 @@ The available errors are:
 
 For more details on error handling in general, see [here](#error-handling).
 
-## `z.cursor`
+### `z.cursor`
 
 The `z.cursor` object exposes two methods:
 
@@ -69,7 +69,7 @@ The `z.cursor` object exposes two methods:
 
 Any data you `set` will be available to that Zap for about an hour (or until it's overwritten). For more information, see: [paging](#paging).
 
-## `z.generateCallbackUrl()`
+### `z.generateCallbackUrl()`
 
 The `z.generateCallbackUrl()` will return a callback URL your app can `POST` to later for handling long running tasks (like transcription or encoding jobs). In the meantime, the Zap and Task will wait for your response and the user will see the Task marked as waiting.
 
@@ -128,17 +128,17 @@ const performResume = async (z, bundle) => {
 
 > `performResume` will only run when the Zap runs live, and cannot be tested in the Zap Editor when configuring the Zap. It is possible to use `bundle.meta.isLoadingSample` to load a fixed sample to allow users to test a step that includes `performResume`.
 
-# `bundle` Object
+## `bundle` Object
 
 This object holds the user's auth details and the data for the API requests.
 
 > The `bundle` object is passed into your functions as the second argument - IE: `perform: (z, bundle) => {}`.
 
-## `bundle.authData`
+### `bundle.authData`
 
 `bundle.authData` is user-provided authentication data, like `api_key` or `access_token`. [Read more on authentication.](#authentication)
 
-## `bundle.inputData`
+### `bundle.inputData`
 
 `bundle.inputData` is user-provided data for this particular run of the trigger/search/create, as defined by the [`inputFields`](#input-fields). For example:
 
@@ -150,7 +150,7 @@ This object holds the user's auth details and the data for the API requests.
 }
 ```
 
-## `bundle.inputDataRaw`
+### `bundle.inputDataRaw`
 
 `bundle.inputDataRaw` is like `bundle.inputData`, but before processing such as interpreting friendly datetimes and rendering `{{curlies}}`:
 
@@ -166,7 +166,7 @@ This object holds the user's auth details and the data for the API requests.
 
 You'll usually want to use `bundle.inputData` instead.
 
-## `bundle.meta`
+### `bundle.meta`
 
 `bundle.meta` contains extra information useful for doing advanced behaviors depending on what the user is doing. It has the following options:
 
@@ -205,7 +205,7 @@ const perform = async (z, bundle) => {
 // ...
 ```
 
-## `bundle.rawRequest`
+### `bundle.rawRequest`
 
 > `bundle.rawRequest` is only available in the `perform` for webhooks, `getAccessToken` for OAuth authentication methods, and `performResume` in a callback action.
 
@@ -224,7 +224,7 @@ const perform = async (z, bundle) => {
 
 In `bundle.rawRequest`, headers other than `Content-Length` and `Content-Type` will be prefixed with `Http-`, and all headers will be named in Camel-Case. For example, the header `X-Time-GMT` would become `Http-X-Time-Gmt`.
 
-## `bundle.cleanedRequest`
+### `bundle.cleanedRequest`
 
 > `bundle.cleanedRequest` is only available in the `perform` for webhooks, `getAccessToken` for OAuth authentication methods, and `performResume` in a callback action.
 
@@ -246,13 +246,13 @@ In `bundle.rawRequest`, headers other than `Content-Length` and `Content-Type` w
 }
 ```
 
-## `bundle.outputData`
+### `bundle.outputData`
 
 > `bundle.outputData` is only available in the `performResume` in a callback action.
 
 `bundle.outputData` will return a whatever data you originally returned in the `perform`, allowing you to mix that with `bundle.rawRequest` or `bundle.cleanedRequest`.
 
-## `bundle.targetUrl`
+### `bundle.targetUrl`
 
 > `bundle.targetUrl` is only available in the `performSubscribe` and `performUnsubscribe` methods for webhooks.
 
@@ -283,7 +283,7 @@ module.exports = {
 
 Read more in the [REST hook example](https://github.com/zapier/zapier-platform/blob/main/example-apps/rest-hooks/triggers/recipe.js).
 
-## `bundle.subscribeData`
+### `bundle.subscribeData`
 
 > `bundle.subscribeData` is available in the `perform` and `performUnsubscribe` method for webhooks.
 
@@ -291,7 +291,7 @@ This is an object that contains the data you returned from the `performSubscribe
 
 Read more in the [REST hook example](https://github.com/zapier/zapier-platform/blob/main/example-apps/rest-hooks/triggers/recipe.js).
 
-# `bufferedBundle` Object
+## `bufferedBundle` Object
 
 *Added in v15.15.0.*
 
@@ -299,22 +299,22 @@ This object holds a user's auth details (`bufferedBundle.authData`) and the buff
 
 > The `bufferedBundle` object is passed into the `performBuffer` function as the second argument - IE: `performBuffer: async (z, bufferedBundle) => {}`.
 
-## `bufferedBundle.authData`
+### `bufferedBundle.authData`
 
 It is a user-provided authentication data, like `api_key` or `access_token`. [Read more on authentication.](#authentication)
 
-## `bufferedBundle.groupedBy`
+### `bufferedBundle.groupedBy`
 
 It is a user-provided data for a set of selected [`inputFields`](#input-fields) to group the multiple runs of a `create` action by.
 
-## `bufferedBundle.buffer`
+### `bufferedBundle.buffer`
 
 It is an array of objects of user-provided data and some meta data to allow multiple runs of a `create` action be processed in a single API request.
 
-### `bufferedBundle.buffer[].inputData`
+#### `bufferedBundle.buffer[].inputData`
 
 It is a user-provided data for a particular run of a `create` action in the buffer, as defined by the [`inputFields`](#input-fields).
 
-### `bufferedBundle.buffer[].meta`
+#### `bufferedBundle.buffer[].meta`
 
 It contains an idempotency `id` provided to the `create` action to identify each run's data in the buffered data.
