@@ -231,7 +231,7 @@ zapier convert 1234 --version 1.0.1 my-app
 
 Most integrations require some sort of authentication. The Zapier platform provides core behaviors for several common authentication methods that might be used with your integration, as well as the ability to customize authentication further.
 
-When a user authenticates to your integration through Zapier, a "connection" is created representing their authentication details. Data tied to a specific authentication connection is included in the [bundle object](#bundle-object) under `bundle.authData`.
+When a user authenticates to your integration through Zapier, a "connection" is created representing their authentication details. Data tied to a specific authentication connection is included in the [bundle object](/platform/build-cli/core#bundle-object) under `bundle.authData`.
 
 ### Basic
 
@@ -1143,7 +1143,7 @@ To implement a Buffered Create, you define a [`buffer`](https://github.com/zapie
 
 The `performBuffer` function should replace the `perform` function. Note that `perform` cannot be defined along with `performBuffer`. Check out the [`create` action operation schema](https://github.com/zapier/zapier-platform/blob/main/packages/schema/docs/build/schema.md#basiccreateactionoperationschema) for details.
 
-Similar to the general `perform` function accepting two arguments, [`z`](https://github.com/zapier/zapier-platform/blob/main/packages/cli/README.md#z-object) and [`bundle`](https://github.com/zapier/zapier-platform/blob/main/packages/cli/README.md#bundle-object) objects, the `performBuffer` function accepts [`z`](https://github.com/zapier/zapier-platform/blob/main/packages/cli/README.md#z-object) and [`bufferedBundle`](https://github.com/zapier/zapier-platform/blob/main/packages/cli/README.md#bufferedbundle-object) objects. They share the same `z` object, but the `bufferedBundle` object is different from the `bundle` object. The `bufferedBundle` object has an idempotency ID set at `bufferedBundle.buffer[].meta.id` for each object in the buffer. `performBuffer` would have to return the idempotency IDs to tell Zapier which objects were successfully written. Find the details about the `bufferedBundle` object [here](https://github.com/zapier/zapier-platform/blob/main/packages/cli/README.md#bufferedbundle-object).
+Similar to the general `perform` function accepting two arguments, [`z`](/platform/build-cli/core#z-object) and [`bundle`](/platform/build-cli/core#bundle-object) objects, the `performBuffer` function accepts [`z`](/platform/build-cli/core#z-object) and [`bufferedBundle`](/platform/build-cli/core#bufferedbundle-object) objects. They share the same `z` object, but the `bufferedBundle` object is different from the `bundle` object. The `bufferedBundle` object has an idempotency ID set at `bufferedBundle.buffer[].meta.id` for each object in the buffer. `performBuffer` would have to return the idempotency IDs to tell Zapier which objects were successfully written. Find the details about the `bufferedBundle` object [here](/platform/build-cli/core#bufferedbundle-object).
 
 Here is an example of a Buffered Create action:
 
@@ -1582,7 +1582,7 @@ An error will be raised if the response cannot be parsed as JSON or form-encoded
 
 Use this when you need full control over the request/response. For example:
 
-1. To do processing (usually involving [`bundle.inputData`](#bundleinputdata)) before a request is made
+1. To do processing (usually involving [`bundle.inputData`](/platform/build-cli/core#bundle-inputdata)) before a request is made
 
 2. To do processing of an API's response before you return data to Zapier
 
@@ -2198,7 +2198,7 @@ processing all responses from HTTP calls. Second is `response.throwForStatus()`
 ([docs](#http-response-object)), which throws an error if the response status indicates
 an error (status >= 400). Since v10.0.0, we automatically call this method before returning the
 response, unless you set `skipThrowForStatus` on the request or response object. The
-last tool is the collection of errors in `z.errors` ([docs](#zerrors)), which control
+last tool is the collection of errors in `z.errors` ([docs](/platform/build-cli/core#z-errors)), which control
 the behavior of Zaps when various kinds of errors occur.
 
 ### General Errors

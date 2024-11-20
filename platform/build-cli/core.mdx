@@ -7,7 +7,7 @@ Most functions get called with `(z, bundle)`. This document is a reference for h
 
 > If you use TypeScript, you can import `ZObject`, `Bundle<InputFields>` and `PerformFunction<InputFields>` from `zapier-platform-core`.
 
-# Z Object
+# `z` Object
 
 We provide several methods off of the `z` object, which is provided as the first argument to all function calls in your integration.
 
@@ -128,7 +128,7 @@ const performResume = async (z, bundle) => {
 
 > `performResume` will only run when the Zap runs live, and cannot be tested in the Zap Editor when configuring the Zap. It is possible to use `bundle.meta.isLoadingSample` to load a fixed sample to allow users to test a step that includes `performResume`.
 
-# Bundle Object
+# `bundle` Object
 
 This object holds the user's auth details and the data for the API requests.
 
@@ -177,7 +177,7 @@ You'll usually want to use `bundle.inputData` instead.
 | `isPopulatingDedupe`       | `false`     | If true, the results of this poll will be used to initialize the deduplication list rather than trigger a zap. You should grab as many items as possible. See also: [deduplication](#dedup)                                                                                                                                   |
 | `limit`                    | `-1`        | The number of items you should fetch. `-1` indicates there's no limit. Build this into your calls insofar as you are able                                                                                                                                                                                                     |
 | `page`                     | `0`         | Used in [paging](#paging) to uniquely identify which page of results should be returned                                                                                                                                                                                                                                       |
-| `timezone`                     | null         | The timezone the user has configured for their account or specfic automation. Received as [TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), such as "America/New_York".                                                                                                                                                                                                                                       |
+| `timezone`                 | null        | The timezone the user has configured for their account or specfic automation. Received as [TZ identifier](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), such as "America/New\_York".                                                                                                                         |
 | `isTestingAuth`            | `false`     | (legacy property) If true, the poll was triggered by a user testing their account (via [clicking "test"](https://cdn.zapier.com/storage/photos/5c94c304ce11b02c073a973466a7b846.png) or during setup). We use this data to populate the auth label, but it's mostly used to verify we made a successful authenticated request |
 | `withSearch`               | `undefined` | When a create is called as part of a search-or-create step, `withSearch` will be the key of the search.                                                                                                                                                                                                                       |
 
@@ -291,7 +291,7 @@ This is an object that contains the data you returned from the `performSubscribe
 
 Read more in the [REST hook example](https://github.com/zapier/zapier-platform/blob/main/example-apps/rest-hooks/triggers/recipe.js).
 
-# Bundle Object (Buffered)
+# `bufferedBundle` Object
 
 *Added in v15.15.0.*
 
