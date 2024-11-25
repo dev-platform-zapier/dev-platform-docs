@@ -2,6 +2,7 @@
 title: Input Field Configuration
 sidebarTitle: Configuration
 ---
+
 On each trigger, search, or create in the `operation` directive, you can provide fields as an array of objects under `inputFields`.
 
 Those fields have various options you can provide. Here is a brief example:
@@ -134,7 +135,9 @@ module.exports = {
 When using dynamic fields, the fields will be retrieved in three different contexts:
 
 * Whenever the value of a field with `altersDynamicFields` is changed, as described above.
+
 * Whenever the Zap Editor opens the "Set up" section for the trigger or action.
+
 * Whenever the "Refresh fields" button at the bottom of the Editor's "Set up" section is clicked.
 
 Be sure to set up your code accordingly - for example, don't rely on any input fields already having a value, since they won't have one the first time the "Set up" section loads.
@@ -194,3 +197,62 @@ const App = {
   },
 };
 ```
+
+### Defining extra input field metadata
+
+Since [version 15.19.0](https://github.com/zapier/zapier-platform/blob/main/CHANGELOG.md#15190), input fields may define a `meta` property containing an object with `string` keys and `string`, `integers` or `boolean` values. This `meta` object will then be made available as part of `bundle.meta`. For example, if an input field with a `create_recipe` key defines a `meta` object, then this object will be available during the `perform` method in: `bundle.meta.inputFields['create_recipe']`.
+
+This is particularly useful when using dynamically-generated fields, as you may want to use this extra context to change certain logic in the `perform` method of your triggers or actions.
+
+```js
+const fetchStringOrDatetimeFields = async (z, bundle) => {
+  // Should return an array like [{'key':'field_1'},{'key':'field_2_datetime'}]
+  const response = await z.request("https://example.com/api/v2/fields.json");
+
+  const resultingFields = [];
+
+  response.data.forEach((field) => {
+    if (field.key.endsWith("_datetime")) {
+      resultingFields.push({
+        key: field.key,
+
+        // Set the meta to be parsed as a datetime
+        meta: { internalType: "datetime" },
+      });
+    } else {
+      resultingFields.push({
+        key: field.key,
+
+        // Set the meta to string (default)
+        meta: { internalType: "string" },
+      });
+    }
+  });
+
+  return resultingFields;
+};
+
+const App = {
+  // ...
+  creates: {
+    create_agenda: {
+      // ...
+      operation: {
+        inputFields: [fetchStringOrDatetimeFields],
+        perform: async (z, bundle) => {
+          for (const [key, value] of Object.entries(bundle.inputData)) {
+            const fieldMeta = bundle.meta[key] || {};
+
+            if (fieldMeta.internalType === "datetime") {
+              // process value as a datetime
+            } else {
+              // process value as a string
+            }
+          }
+        },
+      },
+    },
+  },
+};
+```
+
