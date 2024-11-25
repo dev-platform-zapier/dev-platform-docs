@@ -200,9 +200,9 @@ const App = {
 
 ### Defining extra input field metadata
 
-Since [version 15.19.0](https://github.com/zapier/zapier-platform/blob/main/CHANGELOG.md#15190), input fields may define a `meta` property containing an object with `string` keys and `string`, `integers` or `boolean` values. This `meta` object will then be made available as part of `bundle.meta`. For example, if an input field with a `create_recipe` key defines a `meta` object, then this object will be available during the `perform` method in: `bundle.meta.inputFields['create_recipe']`.
+Since [version 15.19.0](https://github.com/zapier/zapier-platform/blob/main/CHANGELOG.md#15190), input fields may define a `meta` property containing an object with `string` keys and `string`, `integers` or `boolean` values. This `meta` object will then be made available as part of [bundle.meta](https://docs.zapier.com/platform/build-cli/core#bundle-meta), under the `inputFields` key. For example, if an input field with a `create_recipe` key defines a `meta` object, then this object will be available during the `perform` method in: `bundle.meta.inputFields['create_recipe']`.
 
-This is particularly useful when using dynamically-generated fields, as you may want to use this extra context to change certain logic in the `perform` method of your triggers or actions.
+This context storage is particularly useful when using dynamically-generated fields, as you may want to use this extra data to change certain logic in the `perform` method of your triggers or actions.
 
 ```js
 const fetchStringOrDatetimeFields = async (z, bundle) => {
@@ -255,4 +255,3 @@ const App = {
   },
 };
 ```
-
