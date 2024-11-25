@@ -4,7 +4,7 @@ sidebarTitle: Overview
 description: "Zapier is a platform for creating integrations and workflows. This CLI is your gateway to creating custom applications on the Zapier platform."
 ---
 
-This doc describes the latest CLI version (**15.18.1**), as of this writing. If you're using an older version of the CLI, you may want to check out these historical releases:
+This doc describes the latest CLI version (**15.19.0**), as of this writing. If you're using an older version of the CLI, you may want to check out these historical releases:
 
 * CLI Docs: [14.x](https://github.com/zapier/zapier-platform/blob/zapier-platform-cli@14.1.2/packages/cli/README.md), [13.x](https://github.com/zapier/zapier-platform/blob/zapier-platform-cli@13.0.0/packages/cli/README.md)
 
@@ -1786,7 +1786,7 @@ This behavior has changed periodically across major versions, which changes how/
 
 ![](https://cdn.zappy.app/e835d9beca1b6489a065d51a381613f3.png)
 
-Ensure you're handling errors correctly for your platform version. The latest released version is **15.18.1**.
+Ensure you're handling errors correctly for your platform version. The latest released version is **15.19.0**.
 
 ### HTTP Request Options
 
@@ -1912,19 +1912,19 @@ if (options.raw === false) {
 
 Dehydration, and its counterpart Hydration, is a tool that can lazily load data that might be otherwise expensive to retrieve aggressively.
 
-* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData)` (or `z.dehydrateFile(func, inputData)` for files). This usually happens in a trigger step.
+* **Dehydration** - think of this as "make a pointer", you control the creation of pointers with `z.dehydrate(func, inputData, cacheExpiration)` (or `z.dehydrateFile(func, inputData, cacheExpiration)` for files). This usually happens in a trigger step.
 
 * **Hydration** - think of this as an automatic step that "consumes a pointer" and "returns some data", Zapier does this automatically behind the scenes. This usually happens in an action step.
 
 > This is very common when [Stashing Files](#stashing-files) - but that isn't their only use!
 
-The method `z.dehydrate(func, inputData)` has two required arguments:
+The method `z.dehydrate(func, inputData, cacheExpiration)` has two required arguments and one optional argument:
 
 * `func` - the function to call to fetch the extra data. Can be any raw `function`, defined in the file doing the dehydration or imported from another part of your integration. You must also register the function in the integration's `hydrators` property. Note that since v10.1.0, the maximum payload size to pass to `z.dehydrate` / `z.dehydrateFile` is 6KB.
 
 * `inputData` - this is an object that contains things like a `path` or `id` - whatever you need to load data on the other side
 
-* A known limitation of hydration is a 5 minute cache if the hydration call is made with identical `inputData` within that timeframe. To workaround this cache for records triggering hydration in close succession, include a unique value in the `inputData`, for example a `timestamp` in addition to the record `id`.
+* `cacheExpiration` (optional) - this is an integer that specifies how long in seconds the response of an hydration call with a specific `inputData` would be cached for. If not specified, a default of 300 seconds (5 minutes) is used. After the first hydration call, subsequent ones with identical `inputData` within this timeframe would use the cached response of the first hydration call until the cache expires. To workaround this cache for records triggering hydration in close succession, include a unique value in the `inputData`, for example a `timestamp` in addition to the record `id`. **Note:** It was added in **v15.19.0**.
 
 > **Why do I need to register my functions?** Because of how JavaScript works with its module system, we need an explicit handle on the function that can be accessed from the App definition without trying to "automagically" (and sometimes incorrectly) infer code locations.
 
@@ -1948,7 +1948,7 @@ const movieList = async (z, bundle) => {
   return response.data.map((movie) => {
     // so maybe /movies.json is thin content but /movies/:id.json has more
     // details we want...
-    movie.details = z.dehydrate(getMovieDetails, { id: movie.id });
+    movie.details = z.dehydrate(getMovieDetails, { id: movie.id }, 3600);
     return movie;
   });
 };
@@ -1980,7 +1980,7 @@ const App = {
 module.exports = App;
 ```
 
-And in future steps of the Zap - if Zapier encounters a pointer as returned by `z.dehydrate(func, inputData)` - Zapier will tie it back to your integration and pull in the data lazily.
+And in future steps of the Zap - if Zapier encounters a pointer as returned by `z.dehydrate(func, inputData, cacheExpiration)` - Zapier will tie it back to your integration and pull in the data lazily.
 
 > **Why can't I just load the data immediately?** Isn't it easier? In some cases it can be - but imagine an API that returns 100 records when polling - doing 100x `GET /id.json` aggressive inline HTTP calls when 99% of the time Zapier doesn't *need* the data yet is wasteful.
 
@@ -1989,13 +1989,13 @@ And in future steps of the Zap - if Zapier encounters a pointer as returned by `
 As you've seen, the usual call to dehydrate will assign the result to an object property:
 
 ```js
-movie.details = z.dehydrate(getMovieDetails, { id: movie.id });
+movie.details = z.dehydrate(getMovieDetails, { id: movie.id }, 3600);
 ```
 
 In this example, all of the movie details will be located in the `details` property (e.g. `details.releaseDate`) after hydration occurs. But what if you want these results available at the top-level (e.g. `releaseDate`)? Zapier supports a specific keyword for this scenario:
 
 ```js
-movie.$HOIST$ = z.dehydrate(getMovieDetails, { id: movie.id });
+movie.$HOIST$ = z.dehydrate(getMovieDetails, { id: movie.id }, 3600);
 ```
 
 Using `$HOIST$` as the key will signal to Zapier that the results should be merged into the object containing the `$HOIST$` key. You can also use this to merge your hydrated data into a property containing "partial" data that exists before dehydration occurs:
@@ -2003,15 +2003,13 @@ Using `$HOIST$` as the key will signal to Zapier that the results should be merg
 ```js
 movie.details = {
   title: movie.title,
-  $HOIST$: z.dehydrate(getMovieDetails, { id: movie.id }),
+  $HOIST$: z.dehydrate(getMovieDetails, { id: movie.id }, 3600),
 };
 ```
 
 ### File Dehydration
 
-*Added in v7.3.0.*
-
-The method `z.dehydrateFile(func, inputData)` allows you to download a file lazily. It takes the same arguments as `z.dehydrate(func, inputData)` does, but is recommended when the data is a file.
+The method `z.dehydrateFile(func, inputData, cacheExpiration)` allows you to download a file lazily. It takes the same arguments as `z.dehydrate(func, inputData, cacheExpiration)` does, but is recommended when the data is a file.
 
 An example can be found in the [Stashing Files](#stashing-files) section.
 
@@ -2019,7 +2017,9 @@ What makes `z.dehydrateFile` different from `z.dehydrate` has to do with efficie
 
 A good example is when users are creating Zaps in the Zap Editor. If a pointer is made by `z.dehydrate`, the Zap Editor will hydrate the data immediately after pulling in samples. This allows users to map fields from the hydrated data into the subsequent steps of the Zap. If, however, the pointer is made by `z.dehydrateFile`, the Zap Editor will wait to hydrate the file, and will display a placeholder instead. There's nothing inside binary file data for users to map in the subsequent steps.
 
-> `z.dehydrateFile(func, inputData)` was added in v7.3.0. We used to recommend using `z.dehydrate(func, inputData)` for files, but we now recommend changing it to `z.dehydrateFile(func, inputData)` for a better user experience.
+> `z.dehydrateFile` was added in **v7.3.0**. We used to recommend using `z.dehydrate` for files, but we now recommend changing it to `z.dehydrateFile` for a better user experience.
+
+> Optional `cacheExpiration` argument was added in **v15.19.0**.
 
 ## Stashing Files
 
@@ -2724,7 +2724,7 @@ Broadly speaking, all releases will continue to work indefinitely. While you nev
 
 For more info about which Node versions are supported, see [the faq](#how-do-i-manually-set-the-nodejs-version-to-run-my-integration-with).
 
-The most recently released version of `cli` and `core` is **15.18.1**. You can see the versions you're working with by running `zapier -v`.
+The most recently released version of `cli` and `core` is **15.19.0**. You can see the versions you're working with by running `zapier -v`.
 
 To update `cli`, run `npm install -g zapier-platform-cli`.
 
